@@ -4,6 +4,7 @@
 #include "FPSHUD.h"
 #include "FPSCharacter.h"
 #include "UObject/ConstructorHelpers.h"
+#include "Kismet/GameplayStatics.h"
 
 AFPSGameMode::AFPSGameMode()
 {
@@ -21,6 +22,30 @@ void AFPSGameMode::CompleteMission(APawn* InstigatorPawn)
 	{
 		//专门禁止对玩家控制器控制着的Pawn，即游戏角色的输入
 		InstigatorPawn->DisableInput(nullptr);
+
+		AActor* NewViewTarget = nullptr;
+
+		//找出世界中特定类类型的所有actor对象
+		TArray<AActor*> OutActors;
+		UGameplayStatics::GetAllActorsOfClass(this, SpectatingViewpointClass, OutActors);
+		if (OutActors.Num())
+		{
+			NewViewTarget = OutActors[0];
+		}
+
+		if (NewViewTarget)
+		{
+			APlayerController* PC = Cast<APlayerController>(InstigatorPawn->GetController());
+			if (PC)
+			{
+				PC->SetViewTargetWithBlend(NewViewTarget, 0.5f, EViewTargetBlendFunction::VTBlend_Cubic);
+			}
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("ViewTarget is null"));
+		}
+		
 	}
 
 	OnMissionCompleted(InstigatorPawn);
