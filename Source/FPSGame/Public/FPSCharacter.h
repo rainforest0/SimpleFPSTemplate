@@ -51,6 +51,8 @@ public:
 	UPROPERTY(BluePrintReadOnly, Category="GamePlay")
 	bool bIsCarryingObjective;
 
+	UPawnNoiseEmitterComponent* PawnNoiseEmitterComp;
+
 protected:
 	
 	/** Fires a projectile. */

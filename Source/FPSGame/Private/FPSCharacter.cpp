@@ -7,6 +7,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Animation/AnimSequence.h"
+#include "Components/PawnNoiseEmitterComponent.h"
 
 
 AFPSCharacter::AFPSCharacter()
@@ -28,6 +29,8 @@ AFPSCharacter::AFPSCharacter()
 	GunMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FP_Gun"));
 	GunMeshComponent->CastShadow = false;
 	GunMeshComponent->SetupAttachment(Mesh1PComponent, "GripPoint");
+
+	PawnNoiseEmitterComp = CreateDefaultSubobject<UPawnNoiseEmitterComponent>(TEXT("PawnNoiseEmitterComp"));
 }
 
 
@@ -63,6 +66,8 @@ void AFPSCharacter::Fire()
 
 		// spawn the projectile at the muzzle
 		GetWorld()->SpawnActor<AFPSProjectile>(ProjectileClass, MuzzleLocation, MuzzleRotation, ActorSpawnParams);
+
+		PawnNoiseEmitterComp->MakeNoise(this, 1.0f, GetActorLocation());
 	}
 
 	// try and play the sound if specified
