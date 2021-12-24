@@ -33,6 +33,7 @@ protected:
 	UFUNCTION()
 	void OnHearNoise(APawn* NoiseInstigator, const FVector& Location, float Volume);
 
+	UFUNCTION()
 	void ResetRatationTimerCallback();
 
 	FTimerHandle TimerHandle_ResetRatation;
