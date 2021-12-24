@@ -43,7 +43,7 @@ void AFPSAIGuard::OnHearNoise(APawn* NoiseInstigator, const FVector& Location, f
 	}
 
 	UE_LOG(LogTemp, Warning, TEXT("I Hear You Name::::%s"), *NoiseInstigator->GetName());
-	DrawDebugSphere(GetWorld(), NoiseInstigator->GetActorLocation(), 32.0f, 12, FColor::Green, false, 10.0f);
+	DrawDebugSphere(GetWorld(), NoiseInstigator->GetActorLocation(), 32.0f, 12, FColor::Yellow, false, 10.0f);
 }
 
 // Called every frame

@@ -39,6 +39,12 @@ void AFPSProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPr
 	{
 		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
 
-		Destroy();
 	}
+
+	// 成员 "AActor::Instigator"  不可访问，是private
+	//MakeNoise(1.0f, Instigator);
+	//传入nullptr 等价于 GetInstigator()
+	MakeNoise(1.0f, nullptr);
+
+	Destroy();
 }
