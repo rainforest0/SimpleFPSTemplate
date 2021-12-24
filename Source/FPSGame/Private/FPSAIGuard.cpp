@@ -14,6 +14,8 @@ AFPSAIGuard::AFPSAIGuard()
 	PawnSensingComp = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComp"));
 	PawnSensingComp->OnHearNoise.AddDynamic(this, &AFPSAIGuard::OnHearNoise);
 	PawnSensingComp->OnSeePawn.AddDynamic(this, &AFPSAIGuard::OnSeePawn);
+
+	OriginRotator = GetActorRotation();
 }
 
 // Called when the game starts or when spawned
@@ -44,6 +46,20 @@ void AFPSAIGuard::OnHearNoise(APawn* NoiseInstigator, const FVector& Location, f
 
 	UE_LOG(LogTemp, Warning, TEXT("I Hear You Name::::%s"), *NoiseInstigator->GetName());
 	DrawDebugSphere(GetWorld(), NoiseInstigator->GetActorLocation(), 32.0f, 12, FColor::Yellow, false, 10.0f);
+
+	FVector Direct = Location - GetActorLocation();
+	Direct.Normalize();
+
+	//只需影响Yaw（左右转动）的变化，不会影响旋转体的Pitch（上下转动）和Roll（倾斜转动），否则会出现AI整个体型仰着的情形
+	FRotator NewRotator = FRotationMatrix::MakeFromX(Direct).Rotator();
+	NewRotator.Pitch = 0.0f;
+	NewRotator.Roll = 0.0f;
+	SetActorRotation(NewRotator);
+
+	//其实只要保存了TimerHandle_ResetRatation，SetTimer中会调用InternalClearTimer
+	//所以只要使用同一个TimerHandle_ResetRatation，并不需要ClearTimer
+	//GetWorldTimerManager().ClearTimer(TimerHandle_ResetRatation);
+	GetWorldTimerManager().SetTimer(TimerHandle_ResetRatation, this, &AFPSAIGuard::ResetRatationTimerCallback, 3.0f, false);
 }
 
 // Called every frame
@@ -52,4 +68,10 @@ void AFPSAIGuard::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
+
+void AFPSAIGuard::ResetRatationTimerCallback()
+{
+	SetActorRotation(OriginRotator);
+}
+
 
