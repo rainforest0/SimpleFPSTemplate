@@ -33,6 +33,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	UCameraComponent* CameraComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AI")
+	UPawnNoiseEmitterComponent* NoiseEmitterComp;
+
 public:
 	AFPSCharacter();
 
@@ -51,7 +54,6 @@ public:
 	UPROPERTY(BluePrintReadOnly, Category="GamePlay")
 	bool bIsCarryingObjective;
 
-	UPawnNoiseEmitterComponent* PawnNoiseEmitterComp;
 
 protected:
 	

@@ -29,19 +29,21 @@ void AFPSAIGuard::OnSeePawn(APawn* SeenPawn)
 	{
 		return;
 	}
+
 	UE_LOG(LogTemp, Warning, TEXT("I See You Name::::%s"), *SeenPawn->GetName());
 	DrawDebugSphere(GetWorld(), SeenPawn->GetActorLocation(), 32.0f, 12, FColor::Red, false, 10.0f);
 
 }
 
-void AFPSAIGuard::OnHearNoise(APawn* InstigatorPawn, const FVector& Location, float Volume)
+void AFPSAIGuard::OnHearNoise(APawn* NoiseInstigator, const FVector& Location, float Volume)
 {
-	if (nullptr == InstigatorPawn)
+	if (nullptr == NoiseInstigator)
 	{
 		return;
 	}
-	UE_LOG(LogTemp, Warning, TEXT("I Hear You Name::::%s"), *InstigatorPawn->GetName());
-	//DrawDebugShpere(GetWorld(), SeenPawn->GetActorLocation(), 32.0f, 12, FColor::Green, false, 10.0f);
+
+	UE_LOG(LogTemp, Warning, TEXT("I Hear You Name::::%s"), *NoiseInstigator->GetName());
+	DrawDebugSphere(GetWorld(), NoiseInstigator->GetActorLocation(), 32.0f, 12, FColor::Green, false, 10.0f);
 }
 
 // Called every frame
