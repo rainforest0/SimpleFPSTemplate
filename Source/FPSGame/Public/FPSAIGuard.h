@@ -28,7 +28,7 @@ protected:
 	UPawnSensingComponent* PawnSensingComp;
 
 	UFUNCTION()
-	void OnSeePawn(APawn* Pawn);
+	void OnSeePawn(APawn* SeenPawn);
 
 	UFUNCTION()
 	void OnHearNoise(APawn* InstigatorPawn, const FVector& Location, float Volume);
