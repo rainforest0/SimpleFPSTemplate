@@ -29,6 +29,9 @@ AFPSProjectile::AFPSProjectile()
 
 	// Die after 3 seconds by default
 	InitialLifeSpan = 3.0f;
+
+	SetReplicates(true);
+	SetReplicateMovement(true);
 }
 
 
@@ -41,10 +44,13 @@ void AFPSProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPr
 
 	}
 
-	// 成员 "AActor::Instigator"  不可访问，是private
-	//MakeNoise(1.0f, Instigator);
-	//传入nullptr 等价于 GetInstigator()
-	MakeNoise(1.0f, nullptr);
+	if (HasAuthority())
+	{
+		// 成员 "AActor::Instigator"  不可访问，是private
+	    //MakeNoise(1.0f, Instigator);
+	    //传入nullptr 等价于 GetInstigator()
+	    MakeNoise(1.0f, nullptr);
 
-	Destroy();
+		Destroy();
+	}
 }
