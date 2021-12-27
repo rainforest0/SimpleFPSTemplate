@@ -117,3 +117,21 @@ void AFPSCharacter::MoveRight(float Value)
 		AddMovementInput(GetActorRightVector(), Value);
 	}
 }
+
+void AFPSCharacter::Tick(float DelTime)
+{
+	Super::Tick(DelTime);
+
+	//IsLocallyControlled（）函数用来检查当前Pawn是否受到本地控制器的控制（可以在有多个玩家时检查当前Pawn是否是自己控制的Pawn）
+	if (!IsLocallyControlled())
+	{
+		FRotator NewRotation = CameraComponent->GetRelativeRotation();
+
+		//RemoteViewPitch该变量已经复制客户端中玩家Pitch的旋转量，可以用其来进行服务器中pawn类型Pitch旋转的同步。
+		// 值得注意的是RemoteViewPitch的类型是Unit8并且被压缩不接受负数 想要得到实际的旋转量需要将其乘以360在除以255即可。
+		//参考void SetRemoteViewPitch(float NewRemoteViewPitch);
+		NewRotation.Pitch = RemoteViewPitch * 360.0f / 255.0f;
+
+		CameraComponent->SetRelativeRotation(NewRotation);
+	}
+}
