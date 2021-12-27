@@ -8,6 +8,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Animation/AnimSequence.h"
 #include "Components/PawnNoiseEmitterComponent.h"
+#include "Net/UnrealNetwork.h"
 
 
 AFPSCharacter::AFPSCharacter()
@@ -134,4 +135,14 @@ void AFPSCharacter::Tick(float DelTime)
 
 		CameraComponent->SetRelativeRotation(NewRotation);
 	}
+}
+
+void AFPSCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AFPSCharacter, bIsCarryingObjective);
+
+
+	//DOREPLIFETIME_CONDTION(AFPSCharacter, bIsCarryingObjective, COND_OwnerOnly);
 }
