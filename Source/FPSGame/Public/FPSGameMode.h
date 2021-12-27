@@ -6,6 +6,9 @@
 #include "GameFramework/GameModeBase.h"
 #include "FPSGameMode.generated.h"
 
+/**
+ * GameMode只存在于服务器上
+ */
 UCLASS()
 class AFPSGameMode : public AGameModeBase
 {

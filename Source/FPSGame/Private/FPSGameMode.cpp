@@ -5,6 +5,7 @@
 #include "FPSCharacter.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Kismet/GameplayStatics.h"
+#include "FPSGameState.h"
 
 AFPSGameMode::AFPSGameMode()
 {
@@ -14,6 +15,8 @@ AFPSGameMode::AFPSGameMode()
 
 	// use our custom HUD class
 	HUDClass = AFPSHUD::StaticClass();
+
+	GameStateClass = AFPSGameState::StaticClass();
 }
 
 void AFPSGameMode::CompleteMission(APawn* InstigatorPawn, bool bMissionSuccess)
@@ -21,7 +24,7 @@ void AFPSGameMode::CompleteMission(APawn* InstigatorPawn, bool bMissionSuccess)
 	if (InstigatorPawn)
 	{
 		//专门禁止对玩家控制器控制着的Pawn，即游戏角色的输入
-		InstigatorPawn->DisableInput(nullptr);
+		//InstigatorPawn->DisableInput(nullptr);
 
 		AActor* NewViewTarget = nullptr;
 
@@ -46,6 +49,12 @@ void AFPSGameMode::CompleteMission(APawn* InstigatorPawn, bool bMissionSuccess)
 			UE_LOG(LogTemp, Warning, TEXT("ViewTarget is null"));
 		}
 		
+	}
+
+	AFPSGameState* GS = GetGameState<AFPSGameState>();
+	if (GS)
+	{
+		GS->MulticastOnMissionCompleted(InstigatorPawn, bMissionSuccess);
 	}
 
 	OnMissionCompleted(InstigatorPawn, bMissionSuccess);
