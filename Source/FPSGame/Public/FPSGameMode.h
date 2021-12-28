@@ -7,7 +7,7 @@
 #include "FPSGameMode.generated.h"
 
 /**
- * GameMode只存在于服务器上
+ * GameMode只存在于服务器上,并不能支持复制到客户端
  */
 UCLASS()
 class AFPSGameMode : public AGameModeBase
